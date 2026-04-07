@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Patient</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
+    .navbar { background: #1a1a2e; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .navbar h1 { color: white; font-size: 20px; }
+    .navbar a { color: #e0e0e0; text-decoration: none; font-size: 14px; margin-left: 16px; }
+    .container { max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    h2 { color: #1a1a2e; margin-bottom: 24px; }
+    .card { background: white; padding: 32px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    label { display: block; font-size: 13px; font-weight: bold; color: #555; margin-bottom: 6px; }
+    input, select, textarea { width: 100%; padding: 11px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 16px; font-family: Arial; }
+    textarea { height: 80px; resize: vertical; }
+    button { width: 100%; padding: 12px; background: #c0392b; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #a93226; }
+    .back { display: inline-block; margin-bottom: 20px; color: #c0392b; text-decoration: none; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>🏥 Hospital Management System</h1>
+    <div>
+      <a href="/">Home</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+  <div class="container">
+    <a href="/patients" class="back">← Back to Patients</a>
+    <h2>Add New Patient</h2>
+    <div class="card">
+      <form method="POST" action="/add_patient">
+        <label>Patient ID</label>
+        <input type="text" name="patient_id" placeholder="e.g. 1001" required>
+
+        <label>Full Name</label>
+        <input type="text" name="name" placeholder="Patient name" required>
+
+        <label>Age</label>
+        <input type="number" name="age" placeholder="Age" required>
+
+        <label>Gender</label>
+        <select name="gender">
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+
+        <label>Phone</label>
+        <input type="text" name="phone" placeholder="Phone number">
+
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Email address">
+
+        <label>Illness</label>
+        <input type="text" name="illness" placeholder="Diagnosis / illness" required>
+
+        <label>Notes</label>
+        <textarea name="note" placeholder="Any notes..."></textarea>
+
+        <button type="submit">Add Patient</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

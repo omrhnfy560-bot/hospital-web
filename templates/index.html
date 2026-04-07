@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hospital Management System</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
+    .navbar { background: #1a1a2e; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .navbar h1 { color: white; font-size: 20px; }
+    .navbar a { color: #e0e0e0; text-decoration: none; font-size: 14px; }
+    .container { max-width: 600px; margin: 80px auto; text-align: center; }
+    h2 { font-size: 28px; margin-bottom: 10px; color: #1a1a2e; }
+    p { color: #666; margin-bottom: 30px; }
+    .card { background: white; padding: 32px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; margin-bottom: 16px; }
+    button { width: 100%; padding: 12px; background: #c0392b; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #a93226; }
+    .welcome { background: white; padding: 32px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .welcome h3 { color: #1a1a2e; margin-bottom: 8px; }
+    .welcome p { margin-bottom: 20px; }
+    .btn { display: inline-block; padding: 12px 24px; background: #c0392b; color: white; border-radius: 8px; text-decoration: none; margin: 6px; }
+    .btn-outline { background: white; color: #c0392b; border: 2px solid #c0392b; }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>🏥 Hospital Management System</h1>
+    {% if doctor %}<a href="/logout">Logout</a>{% endif %}
+  </div>
+  <div class="container">
+    {% if doctor %}
+      <div class="welcome">
+        <h3>Welcome, Dr. {{ doctor.name }}</h3>
+        <p>Specialty: {{ doctor.specialty }}</p>
+        <a href="/patients" class="btn">View Patients</a>
+        <a href="/add_patient" class="btn btn-outline">Add Patient</a>
+      </div>
+    {% else %}
+      <h2>Doctor Login</h2>
+      <p>Enter your Doctor ID to access the system</p>
+      <div class="card">
+        <form method="POST" action="/login">
+          <input type="text" name="doctor_id" placeholder="Enter Doctor ID (e.g. 999)" required>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
