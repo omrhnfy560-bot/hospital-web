@@ -113,5 +113,14 @@ def admin_logout():
     session.pop("is_admin", None)
     return redirect(url_for("index"))
 
+@app.route("/edit_doctor/<did>", methods=["GET", "POST"])
+def edit_doctor(did):
+    doctor = doctors.get(did)
+    if request.method == "POST":
+        doctors[did]["name"] = request.form.get("name")
+        doctors[did]["specialty"] = request.form.get("specialty")
+        return redirect(url_for("doctor_list"))
+    return render_template("edit_doctor.html", did=did, doctor=doctor)
+
 if __name__ == "__main__":
       app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

@@ -46,6 +46,7 @@
           <h3>Dr. {{ d.name }}</h3>
           <p>ID: {{ did }} · {{ d.specialty }}</p>
         </div>
+        <a href="/edit_doctor/{{ did }}" style="color: #1a1a2e; text-decoration: none; font-size: 13px; margin-left: 12px;">Edit</a>
         <a href="/remove_doctor/{{ did }}" class="delete" onclick="return confirm('Remove Dr. {{ d.name }}?')">Remove</a>
       </div>
       {% endfor %}
