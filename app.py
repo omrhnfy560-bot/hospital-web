@@ -122,5 +122,18 @@ def edit_doctor(did):
         return redirect(url_for("doctor_list"))
     return render_template("edit_doctor.html", did=did, doctor=doctor)
 
+@app.route("/edit_patient/<pid>", methods=["GET", "POST"])
+def edit_patient(pid):
+    patient = patients.get(pid)
+    if request.method == "POST":
+        patients[pid]["name"] = request.form.get("name")
+        patients[pid]["age"] = request.form.get("age")
+        patients[pid]["gender"] = request.form.get("gender")
+        patients[pid]["phone"] = request.form.get("phone")
+        patients[pid]["email"] = request.form.get("email")
+        patients[pid]["illness"] = request.form.get("illness")
+        return redirect(url_for("patient_detail", pid=pid))
+    return render_template("edit_patient.html", pid=pid, patient=patient)
+
 if __name__ == "__main__":
       app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

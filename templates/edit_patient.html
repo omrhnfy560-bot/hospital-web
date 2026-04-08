@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Patient</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
+    .navbar { background: #1a1a2e; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .navbar h1 { color: white; font-size: 20px; }
+    .navbar a { color: #e0e0e0; text-decoration: none; font-size: 14px; margin-left: 16px; }
+    .container { max-width: 500px; margin: 40px auto; padding: 0 20px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #c0392b; text-decoration: none; font-size: 14px; }
+    h2 { color: #1a1a2e; margin-bottom: 24px; }
+    .card { background: white; padding: 32px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    label { display: block; font-size: 13px; font-weight: bold; color: #555; margin-bottom: 6px; }
+    input, select { width: 100%; padding: 11px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 16px; }
+    button { width: 100%; padding: 12px; background: #c0392b; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #a93226; }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>🏥 Hospital Management System</h1>
+    <div>
+      <a href="/patients">Patients</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+  <div class="container">
+    <a href="/patient/{{ pid }}" class="back">← Back to Patient</a>
+    <h2>Edit Patient</h2>
+    <div class="card">
+      <form method="POST" action="/edit_patient/{{ pid }}">
+        <label>Full Name</label>
+        <input type="text" name="name" value="{{ patient.name }}" required>
+        <label>Age</label>
+        <input type="number" name="age" value="{{ patient.age }}" required>
+        <label>Gender</label>
+        <select name="gender">
+          <option value="M" {% if patient.gender == 'M' %}selected{% endif %}>Male</option>
+          <option value="F" {% if patient.gender == 'F' %}selected{% endif %}>Female</option>
+        </select>
+        <label>Phone</label>
+        <input type="text" name="phone" value="{{ patient.phone or '' }}">
+        <label>Email</label>
+        <input type="email" name="email" value="{{ patient.email or '' }}">
+        <label>Illness</label>
+        <input type="text" name="illness" value="{{ patient.illness }}" required>
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
