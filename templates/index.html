@@ -6,44 +6,76 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
-    .navbar { background: #1a1a2e; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .navbar { background: #1a1a2e; padding: 16px 32px; }
     .navbar h1 { color: white; font-size: 20px; }
-    .navbar a { color: #e0e0e0; text-decoration: none; font-size: 14px; }
-    .container { max-width: 600px; margin: 80px auto; text-align: center; }
-    h2 { font-size: 28px; margin-bottom: 10px; color: #1a1a2e; }
-    p { color: #666; margin-bottom: 30px; }
-    .card { background: white; padding: 32px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-    input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; margin-bottom: 16px; }
-    button { width: 100%; padding: 12px; background: #c0392b; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
-    button:hover { background: #a93226; }
-    .welcome { background: white; padding: 32px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-    .welcome h3 { color: #1a1a2e; margin-bottom: 8px; }
-    .welcome p { margin-bottom: 20px; }
-    .btn { display: inline-block; padding: 12px 24px; background: #c0392b; color: white; border-radius: 8px; text-decoration: none; margin: 6px; }
-    .btn-outline { background: white; color: #c0392b; border: 2px solid #c0392b; }
+    .container { max-width: 500px; margin: 80px auto; padding: 0 20px; }
+    h2 { font-size: 26px; margin-bottom: 8px; color: #1a1a2e; text-align: center; }
+    .subtitle { color: #888; text-align: center; margin-bottom: 40px; font-size: 14px; }
+    .card { background: white; padding: 28px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 16px; }
+    .card h3 { color: #1a1a2e; margin-bottom: 6px; font-size: 17px; }
+    .card p { color: #888; font-size: 13px; margin-bottom: 16px; }
+    input { width: 100%; padding: 11px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+    .btn-red { width: 100%; padding: 11px; background: #c0392b; color: white; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
+    .btn-dark { width: 100%; padding: 11px; background: #1a1a2e; color: white; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
+    .btn-red:hover { background: #a93226; }
+    .btn-dark:hover { background: #2c2c4e; }
+    .error { color: #c0392b; font-size: 13px; margin-bottom: 10px; }
+    .welcome { background: white; padding: 28px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); text-align: center; }
+    .welcome h3 { color: #1a1a2e; margin-bottom: 6px; }
+    .welcome p { color: #888; margin-bottom: 20px; font-size: 14px; }
+    .btn-outline { display: inline-block; padding: 10px 20px; background: white; color: #c0392b; border: 2px solid #c0392b; border-radius: 8px; text-decoration: none; margin: 4px; font-size: 14px; }
+    .btn-fill { display: inline-block; padding: 10px 20px; background: #c0392b; color: white; border-radius: 8px; text-decoration: none; margin: 4px; font-size: 14px; }
+    .divider { text-align: center; color: #ccc; margin: 8px 0; font-size: 12px; }
   </style>
 </head>
 <body>
   <div class="navbar">
     <h1>🏥 Hospital Management System</h1>
-    {% if doctor %}<a href="/logout">Logout</a>{% endif %}
   </div>
   <div class="container">
+    <h2>Welcome</h2>
+    <p class="subtitle">Select your access type below</p>
+
     {% if doctor %}
       <div class="welcome">
         <h3>Welcome, Dr. {{ doctor.name }}</h3>
         <p>Specialty: {{ doctor.specialty }}</p>
-        <a href="/patients" class="btn">View Patients</a>
-        <a href="/add_patient" class="btn btn-outline">Add Patient</a>
-        <a href="/doctors" class="btn btn-outline">Manage Doctors</a>
+        <a href="/patients" class="btn-fill">View Patients</a>
+        <a href="/add_patient" class="btn-outline">Add Patient</a>
+        <br><br>
+        <a href="/logout" style="color:#999; font-size:13px;">Logout</a>
       </div>
+
+    {% elif session.get('is_admin') %}
+      <div class="welcome">
+        <h3>Admin Panel</h3>
+        <p>Manage the system below</p>
+        <a href="/doctors" class="btn-fill">Manage Doctors</a>
+        <br><br>
+        <a href="/admin_logout" style="color:#999; font-size:13px;">Logout</a>
+      </div>
+
     {% else %}
-      <h2>Doctor Login</h2>
-      <p>Enter your Doctor ID to access the system</p>
+      <!-- MANAGE SYSTEM -->
       <div class="card">
+        <h3>🔧 Manage System</h3>
+        <p>Admin access to add or remove doctors</p>
+        <form method="POST" action="/admin_login">
+          <input type="password" name="password" placeholder="Admin password" required>
+          {% if error %}<p class="error">{{ error }}</p>{% endif %}
+          <button type="submit" class="btn-dark">Enter Admin Panel</button>
+        </form>
+      </div>
+
+      <div class="divider">or</div>
+
+      <!-- DOCTOR LOGIN -->
+      <div class="card">
+        <h3>👨‍⚕️ Doctor Login</h3>
+        <p>Enter your Doctor ID to access patient records</p>
         <form method="POST" action="/login">
           <input type="text" name="doctor_id" placeholder="Enter Doctor ID (e.g. 999)" required>
-          <button type="submit">Login</button>
+          <button type="submit" class="btn-red">Login</button>
         </form>
       </div>
     {% endif %}

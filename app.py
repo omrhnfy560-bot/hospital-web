@@ -1,7 +1,7 @@
 import os
 import os
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from datetime import datetime
 import re
 
@@ -17,6 +17,8 @@ doctors = {
     "555": {"name": "Rodi", "specialty": "Internist"},
 }
 current_doctor = None
+ADMIN_PASSWORD = "clinic2024"
+app.secret_key = "hospital_secret_key"
 
 @app.route("/")
 def index():
@@ -80,6 +82,18 @@ def add_appointment(pid):
 def remove_patient(pid):
     patients.pop(pid, None)
     return redirect(url_for("patient_list"))
+
+@app.route("/admin_login", methods=["POST"])
+def admin_login():
+    if request.form.get("password") == ADMIN_PASSWORD:
+        session["is_admin"] = True
+        return redirect(url_for("index"))
+    return render_template("index.html", error="Wrong password", doctor=None)
+
+@app.route("/admin_logout")
+def admin_logout():
+    session.pop("is_admin", None)
+    return redirect(url_for("index"))
 
 if __name__ == "__main__":
       app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
