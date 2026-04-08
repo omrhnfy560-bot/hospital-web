@@ -83,6 +83,24 @@ def remove_patient(pid):
     patients.pop(pid, None)
     return redirect(url_for("patient_list"))
 
+@app.route("/doctors")
+def doctor_list():
+    return render_template("doctors.html", doctors=doctors, doctor=current_doctor)
+
+@app.route("/add_doctor", methods=["POST"])
+def add_doctor():
+    did = request.form.get("doctor_id")
+    doctors[did] = {
+        "name": request.form.get("name"),
+        "specialty": request.form.get("specialty")
+    }
+    return redirect(url_for("doctor_list"))
+
+@app.route("/remove_doctor/<did>")
+def remove_doctor(did):
+    doctors.pop(did, None)
+    return redirect(url_for("doctor_list"))
+
 @app.route("/admin_login", methods=["POST"])
 def admin_login():
     if request.form.get("password") == ADMIN_PASSWORD:
